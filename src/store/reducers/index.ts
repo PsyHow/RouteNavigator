@@ -1,0 +1,1 @@
+export { locationReducer } from "./location";
