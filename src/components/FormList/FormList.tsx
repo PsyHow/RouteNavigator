@@ -1,14 +1,23 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
-import { FC } from "react";
+import { ChangeEvent, FC, MouseEventHandler } from "react";
 
-import { Select, Table } from "antd";
+import { Row, Select, Table } from "antd";
+import { BaseOptionType } from "antd/lib/select";
 import { useDispatch, useSelector } from "react-redux";
 
 import style from "./styles/formList.module.scss";
 
 import "antd/dist/antd.css";
+import { selectTableList } from "selectors/formList";
 import { setCurrentForm } from "store/actions";
-import { AppRootStoreType } from "store/store";
+import { setCurrentSending, setCurrentArrival } from "store/actions/location";
+import { LocationType } from "store/reducers/location";
+
+type RowType = {
+  key: number;
+  number: number;
+  sending: { name: string; locate: number[] };
+  arrival: { name: string; locate: number[] };
+};
 
 const test = [
   { id: 1, name: "Новосибирск", locate: [54.96781445, 82.95159894278376] },
@@ -21,49 +30,59 @@ const test = [
   },
 ];
 
-const task1: TaskType = {
-  sending: { name: "Москва", locate: [55.7504461, 37.6174943] },
-  arrival: { name: "Новосибирск", locate: [54.96781445, 82.95159894278376] },
-};
-
-type TaskType = {
-  sending: { name: string; locate: number[] };
-  arrival: { name: string; locate: number[] };
-};
-
 export const FormList: FC = () => {
   const { Option } = Select;
+
   const dispatch = useDispatch();
+  const tableList = useSelector(selectTableList);
 
-  const tasks = useSelector<AppRootStoreType, any>(
-    (st) => st.locationReducer.tableList
-  );
+  const data: RowType[] = tableList.map((el, index) => ({
+    key: index,
+    number: index + 1,
+    sending: el.sending,
+    arrival: el.arrival,
+  }));
 
-  console.log(tasks);
+  const handleChange = (value: string, options: BaseOptionType): any => {
+    const option = value.split(",").map((item: string) => +item);
 
-  const handleChange = (value: any): void => {
-    console.log(value);
-    // console.log(event.currentTarget.value.split(",").map((i) => +i));
+    dispatch(setCurrentSending({ name: options.children, locate: option }));
+  };
+
+  const handleChange2 = (value: string, options: BaseOptionType): any => {
+    const option = value.split(",").map((item: string) => +item);
+
+    dispatch(
+      setCurrentArrival(
+        { name: options.children, locate: option },
+        options.label
+      )
+    );
+  };
+
+  const stopProp = (event: any): void => {
+    event.stopPropagation();
   };
 
   const columns = [
     {
       title: "№",
-      dataIndex: "key",
+      dataIndex: "number",
       width: 50,
     },
     {
       title: "Пункт отправки",
       dataIndex: "sending",
       width: 150,
-      render: () => (
+      render: (a: LocationType, b: RowType) => (
         <Select
+          onClick={stopProp}
           style={{ minWidth: "200px" }}
-          defaultValue={test[0].name}
+          defaultValue={tableList[b.key].sending.name}
           onChange={handleChange}
         >
           {test.map((item) => (
-            <Option key={item.id} value={item.locate.join()}>
+            <Option key={item.id} label={b.key} value={item.locate.join()}>
               {item.name}
             </Option>
           ))}
@@ -73,44 +92,36 @@ export const FormList: FC = () => {
     {
       title: "Пункт прибытия",
       dataIndex: "arrival",
+      with: 150,
+      render: (rows: LocationType, currentRow: RowType) => (
+        <Select
+          onClick={stopProp}
+          style={{ minWidth: "200px" }}
+          defaultValue={tableList[currentRow.key].arrival.name}
+          onChange={handleChange2}
+        >
+          {test.map((item) => (
+            <Option
+              key={item.id}
+              label={currentRow.key}
+              value={item.locate.join()}
+            >
+              {item.name}
+            </Option>
+          ))}
+        </Select>
+      ),
     },
   ];
-
-  const data = [
-    {
-      key: 1,
-      sending: task1.sending,
-      arrival: task1.arrival,
-    },
-    {
-      key: 2,
-      sending: "",
-      arrival: "Алматы, Машхур-Жусупа 34",
-    },
-  ];
-
   return (
     <Table
       className={style.table}
       onRow={(row) => ({
         onClick: () => {
-          // @ts-ignore
-          console.log(row.arrival.name);
-
           dispatch(
             setCurrentForm({
-              arrival: {
-                // @ts-ignore
-                name: row.arrival.name,
-                // @ts-ignore
-                locate: row.arrival.locate,
-              },
-              sending: {
-                // @ts-ignore
-                name: row.sending.name,
-                // @ts-ignore
-                locate: row.sending.locate,
-              },
+              sending: { ...row.sending },
+              arrival: { ...row.arrival },
             })
           );
         },

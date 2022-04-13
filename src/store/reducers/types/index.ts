@@ -1,3 +1,10 @@
-import { setCurrentForm } from "store/actions";
+import {
+  setCurrentForm,
+  setCurrentArrival,
+  setCurrentSending,
+} from "store/actions";
 
-export type LocationActionTypes = ReturnType<typeof setCurrentForm>;
+export type LocationActionTypes =
+  | ReturnType<typeof setCurrentForm>
+  | ReturnType<typeof setCurrentArrival>
+  | ReturnType<typeof setCurrentSending>;

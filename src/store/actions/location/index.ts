@@ -1,1 +1,5 @@
-export { setCurrentForm } from "./location";
+export {
+  setCurrentForm,
+  setCurrentSending,
+  setCurrentArrival,
+} from "./location";

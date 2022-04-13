@@ -45,7 +45,7 @@
         "warn"
       ],
       "@typescript-eslint/no-magic-numbers": [
-        "warn",
+        "off",
         {
           "ignoreEnums": true,
           "ignoreNumericLiteralTypes": true
@@ -60,7 +60,12 @@
           "allowExpressions": true
         }
       ],
-      "prettier/prettier": "warn",
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ],
       "react/prop-types": 0,
       "react/display-name": "off",
       "react/react-in-jsx-scope": "off",
