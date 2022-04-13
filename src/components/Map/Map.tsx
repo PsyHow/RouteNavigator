@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 import style from "./styles/map.module.scss";
 
-import { LocationType } from "store/reducers/location";
+import { CurrentFormType, LocationType } from "store/reducers/location";
 import { AppRootStoreType } from "store/store";
 
 export const Map: FC = () => {
@@ -17,7 +17,7 @@ export const Map: FC = () => {
     (state) => state.locationReducer.arrival
   );
 
-  const currentForm = useSelector<AppRootStoreType>(
+  const currentForm = useSelector<AppRootStoreType, CurrentFormType>(
     (state) => state.locationReducer.currentForm
   );
 
@@ -33,15 +33,23 @@ export const Map: FC = () => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={sending.locate as LatLngExpression}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
+      <Marker
+        position={
+          currentForm.arrival.locate.length > 0
+            ? (currentForm.arrival.locate as LatLngExpression)
+            : (sending.locate as LatLngExpression)
+        }
+      >
+        <Popup>{sending.name}</Popup>
       </Marker>
-      <Marker position={arrival.locate as LatLngExpression}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
+      <Marker
+        position={
+          currentForm.sending.locate.length > 0
+            ? (currentForm.sending.locate as LatLngExpression)
+            : (sending.locate as LatLngExpression)
+        }
+      >
+        <Popup>{currentForm.sending.name}</Popup>
       </Marker>
     </MapContainer>
   );

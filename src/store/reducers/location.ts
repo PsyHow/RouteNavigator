@@ -2,6 +2,14 @@ import { LocationActionTypes } from "./types";
 
 const initialState = {
   location: "map",
+  tableList: [
+    {
+      sending: {
+        name: "Новосибирск",
+        locate: [54.96781445, 82.95159894278376],
+      },
+    },
+  ],
   sending: {
     name: "Новосибирск",
     locate: [54.96781445, 82.95159894278376],
