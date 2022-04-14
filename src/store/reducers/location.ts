@@ -55,32 +55,25 @@ export const locationReducer = (
       };
     }
     case "SET_CURRENT_SENDING": {
-      // return {
-      //   ...state,
-      //   tableList: state.tableList.map((item) =>
-      //     item.id === action.payload.id
-      //       ? { ...item, sending: action.payload.location }
-      //       : item
-      //   ),
-      // };
       return {
         ...state,
-        currentForm: {
-          ...state.currentForm,
-          sending: action.payload,
-        },
+        tableList: state.tableList.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, sending: action.payload.location }
+            : item
+        ),
       };
     }
-    // case "SET_CURRENT_ARRIVAL": {
-    //   return {
-    //     ...state,
-    //     tableList: state.tableList.map((item) =>
-    //       item.id === action.payload.id
-    //         ? { ...item, arrival: action.payload.location }
-    //         : item
-    //     ),
-    //   };
-    // }
+    case "SET_CURRENT_ARRIVAL": {
+      return {
+        ...state,
+        tableList: state.tableList.map((item) =>
+          item.id === action.payload.id
+            ? { ...item, arrival: action.payload.location }
+            : item
+        ),
+      };
+    }
     default:
       return state;
   }

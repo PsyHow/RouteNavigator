@@ -6,10 +6,10 @@ export const setCurrentForm = (payload: CurrentFormType) =>
     payload,
   } as const);
 
-export const setCurrentSending = (payload: LocationType) =>
+export const setCurrentSending = (location: LocationType, id: number) =>
   ({
     type: "SET_CURRENT_SENDING",
-    payload,
+    payload: { location, id },
   } as const);
 
 export const setCurrentArrival = (location: LocationType, id: number) =>
