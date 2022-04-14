@@ -118,7 +118,7 @@
       "import/no-extraneous-dependencies": [
         "warn",
         {
-          "devDependencies": true,
+          "devDependencies": ["**/*.test.ts", "**/*.test.tsx"],
           "optionalDependencies": true,
           "peerDependencies": true
         }

@@ -1,7 +1,7 @@
-import { LocationActionTypes } from "./types";
+import { LocationActionTypes } from "store/reducers/types";
 
 const initialState = {
-  tableList: [
+  formList: [
     {
       id: 0,
       sending: { name: "Москва", locate: [55.7504461, 37.6174943] },
@@ -18,6 +18,17 @@ const initialState = {
         locate: [59.917857350000006, 30.380619357025516],
       },
     },
+    {
+      id: 2,
+      sending: {
+        name: "Санкт-Петербург",
+        locate: [59.917857350000006, 30.380619357025516],
+      },
+      arrival: {
+        name: "Новосибирск",
+        locate: [54.96781445, 82.95159894278376],
+      },
+    },
   ],
   currentForm: {
     sending: {
@@ -29,16 +40,6 @@ const initialState = {
       locate: [64.6863136, 97.7453061] as number[],
     },
   },
-};
-
-export interface CurrentFormType {
-  sending: { name: string; locate: number[] };
-  arrival: { name: string; locate: number[] };
-}
-
-export type LocationType = {
-  name: string;
-  locate: number[];
 };
 
 type InitialStateType = typeof initialState;
@@ -57,7 +58,7 @@ export const locationReducer = (
     case "SET_CURRENT_SENDING": {
       return {
         ...state,
-        tableList: state.tableList.map((item) =>
+        formList: state.formList.map((item) =>
           item.id === action.payload.id
             ? { ...item, sending: action.payload.location }
             : item
@@ -67,7 +68,7 @@ export const locationReducer = (
     case "SET_CURRENT_ARRIVAL": {
       return {
         ...state,
-        tableList: state.tableList.map((item) =>
+        formList: state.formList.map((item) =>
           item.id === action.payload.id
             ? { ...item, arrival: action.payload.location }
             : item

@@ -1,13 +1,13 @@
 import { FC } from "react";
 
-import style from "./app.module.scss";
+import "./app.css";
 
-import { FormList } from "components/FormList";
+import { FormListContainer } from "components/FormList";
 import { Map } from "components/Map";
 
 const App: FC = () => (
-  <div className={style.container}>
-    <FormList />
+  <div className="container">
+    <FormListContainer />
     <Map />
   </div>
 );

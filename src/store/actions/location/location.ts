@@ -1,4 +1,4 @@
-import { CurrentFormType, LocationType } from "store/reducers/location";
+import { CurrentFormType, LocationType } from "store/reducers/types";
 
 export const setCurrentForm = (payload: CurrentFormType) =>
   ({

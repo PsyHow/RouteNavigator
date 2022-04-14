@@ -1,8 +1,8 @@
-import { CurrentFormType } from "store/reducers/location";
-import { AppRootStoreType } from "store/store";
+import { AppRootStoreType } from "store";
+import { CurrentFormType } from "store/reducers/types";
 
-export const selectTableList = (state: AppRootStoreType): CurrentFormType[] =>
-  state.locationReducer.tableList;
+export const selectFormList = (state: AppRootStoreType): CurrentFormType[] =>
+  state.locationReducer.formList;
 
 export const selectCurrentList = (state: AppRootStoreType): CurrentFormType =>
   state.locationReducer.currentForm;
