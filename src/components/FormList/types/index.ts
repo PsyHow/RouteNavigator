@@ -2,7 +2,7 @@ import { ColumnGroupType, ColumnType } from "antd/lib/table";
 
 export interface FormListProps {
   handleRowSelect: (record: RowType) => void;
-  selectCurrentFormClick: (currentRow: number | undefined) => void;
+  selectCurrentFormClick: (currentRow: number) => void;
   selectedRow: RowType | undefined;
   columns: (ColumnGroupType<any> | ColumnType<any>)[];
   rows: RowType[];

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 
 import { Select } from "antd";
 import { BaseOptionType } from "antd/lib/select";
@@ -36,9 +36,7 @@ export const FormListContainer: FC = () => {
   const formList = useSelector(selectFormList);
   const currentFormList = useSelector(selectCurrentList);
 
-  const [selectedRow, setSelectedRow] = useState<RowType | undefined>(
-    undefined
-  );
+  const [selectedRow, setSelectedRow] = useState<RowType>();
 
   const rows: RowType[] = formList.map((el, index) => ({
     key: index,
@@ -141,30 +139,31 @@ export const FormListContainer: FC = () => {
     },
   ];
 
-  const selectCurrentFormClick = (currentRow: any): void => {
-    dispatch(
-      sagaSelectForm({
-        sending: {
-          locate: formList[currentRow as number].sending.locate,
-          name: formList[currentRow as number].sending.name,
-        },
-        arrival: {
-          locate: formList[currentRow as number].arrival.locate,
-          name: formList[currentRow as number].arrival.name,
-        },
-      })
-    );
-  };
+  const selectCurrentFormClick = useCallback(
+    (currentRow: number): void => {
+      dispatch(
+        sagaSelectForm({
+          sending: {
+            locate: formList[currentRow].sending.locate,
+            name: formList[currentRow].sending.name,
+          },
+          arrival: {
+            locate: formList[currentRow].arrival.locate,
+            name: formList[currentRow].arrival.name,
+          },
+        })
+      );
+    },
+    [formList]
+  );
 
-  const handleRowSelect = (record: RowType): void => {
-    if (selectedRow === undefined) {
+  const handleRowSelect = useCallback(
+    (record: RowType): void => {
       setSelectedRow(record);
-    } else if (selectedRow.key === record.key) {
-      setSelectedRow(undefined);
-    } else {
-      setSelectedRow(record);
-    }
-  };
+    },
+    [selectedRow]
+  );
+
   return (
     <FormList
       handleRowSelect={handleRowSelect}
